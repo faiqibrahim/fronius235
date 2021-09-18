@@ -6,7 +6,7 @@ const currentTime = () => {
 
 const convertTZMoment = (date) => moment(date).tz('Asia/Karachi');
 
-const convertTZ = (date, format = 'YYYY-MM-DD') => {
+const convertTZ = (date, format = 'YYYY-MM-DD HH:mm:ss.SSS') => {
     return convertTZMoment(date).format(format);
 }
 
