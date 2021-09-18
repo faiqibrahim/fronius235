@@ -1,12 +1,12 @@
 const moment = require('moment');
 const {Pool} = require('pg');
 
-const pool = new Pool({
-    connectionString: process.env.DATABASE_URL,
-    ssl: {
-        rejectUnauthorized: false
-    }
-});
+const poolProps = {connectionString: process.env.DATABASE_URL}
+
+if (process.env.NODE_ENV !== 'DEV')
+    poolProps.ssl = {rejectUnauthorized: false}
+
+const pool = new Pool(poolProps);
 
 const testConnection = async () => {
     const connection = await pool.connect();
