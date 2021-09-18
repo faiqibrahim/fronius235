@@ -8,7 +8,9 @@ const basicAuth = require('express-basic-auth');
 const app = express();
 
 const {parseCurrentData, logCurrentData} = require('./utils/SolarUtils');
+
 const SolarService = require('./services/SolarService');
+const MeterService = require('./services/MeterService');
 
 app.use(basicAuth({
     users: {
@@ -63,6 +65,28 @@ app.get('/year-stats', (req, resp) => {
             resp.status(500).send({});
         })
 });
+
+app.post('/meter-reading', (req, resp) => {
+    MeterService.saveMeterReading(req.body)
+        .then(reading => {
+            resp.status(200).send({reading});
+        })
+        .catch(err => {
+            console.error('Error occurred while saving meter-reading', err);
+            resp.status(500).send({});
+        })
+})
+
+app.patch('/migrate', (req, resp) => {
+    SolarService.loadMigrationData()
+        .then(() => {
+            resp.status(200).send({});
+        })
+        .catch(err => {
+            console.error('Error occurred while saving migration-data', err);
+            resp.status(500).send({});
+        })
+})
 
 
 const PORT = process.env.PORT || 3000;
