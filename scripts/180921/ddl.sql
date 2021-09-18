@@ -37,11 +37,11 @@ CREATE TABLE usage_stats(
     production NUMERIC NOT NULL,
     production_per_day NUMERIC NOT NULL,
 
-    consumed_units NUMERIC NOT NULL,
-    consumed_units_per_day NUMERIC NOT NULL,
-
     net_export NUMERIC NOT NULL,
     net_export_per_day NUMERIC NOT NULL,
+
+    consumed_units NUMERIC NOT NULL,
+    consumed_units_per_day NUMERIC NOT NULL,
 
     grid_import_units NUMERIC NOT NULL,
     grid_import_units_per_day NUMERIC NOT NULL,

@@ -12,7 +12,7 @@ const parseCurrentData = (body) => {
     const totalEnergy = convert(data.Body.TOTAL_ENERGY.Values['1']).from(data.Body.TOTAL_ENERGY.Unit).to('kWh');
 
     return {
-        time : convertTZ(time),
+        time: convertTZ(time),
         dayEnergy,
         currentPower,
         totalEnergy
@@ -39,22 +39,24 @@ const prepareUsageStats = (lastReading, meterReading, total_production, last_tot
     const to_date = meterReading.reading_date;
     const {days_span} = meterReading;
 
-    const production = _.round(+total_production - +last_total_production, 2); // 10
-    const production_per_day = _.round(production / days_span, 2); // 10
+    const export_units = _.round(+meterReading.export_units - +lastReading.export_units, 2);
+    const import_units = _.round(+meterReading.import_units - +lastReading.import_units, 2);
 
-    const export_units = _.round(+meterReading.export_units - +lastReading.export_units, 2); // 7
+    // Production = Export Units + Direct Solar Consumed Units  e.g 10 = 7 + 3
+    // House Consumption = Import Units + Direct Solar Consumed Units e.g 8 = 5 + 3
+    // Net Export = Production - House Consumption e.g 2 = 10 - 8
 
-    const grid_import_units = _.round(+meterReading.import_units - +lastReading.import_units, 2); // 10
-    const grid_import_units_per_day = _.round(grid_import_units / days_span, 2); // 10
+    const production = _.round(+total_production - +last_total_production, 2);
+    const production_per_day = _.round(production / days_span, 2);
 
-    const net_export = _.round(export_units - grid_import_units, 2); // 3
-    const net_export_per_day = _.round(net_export / days_span, 2); // 3
+    const direct_solar_units = _.round(production - export_units, 2);
+    const direct_solar_units_per_day = _.round(direct_solar_units / days_span, 2);
 
-    const consumed_units = _.round(grid_import_units + (production - export_units), 2); // 10 + (10 - 7) = 13
-    const consumed_units_per_day = _.round(consumed_units / days_span, 2); // 10 + (10 - 7) = 13
+    const consumed_units = _.round(import_units + direct_solar_units, 2);
+    const consumed_units_per_day = _.round(consumed_units / days_span, 2);
 
-    const direct_solar_units = _.round(consumed_units - grid_import_units, 2); // 3
-    const direct_solar_units_per_day = _.round(direct_solar_units / days_span, 2); // 3
+    const net_export = _.round(production - consumed_units, 2);
+    const net_export_per_day = _.round(net_export / days_span, 2);
 
     return {
         from_date,
@@ -64,17 +66,17 @@ const prepareUsageStats = (lastReading, meterReading, total_production, last_tot
         production,
         production_per_day,
 
-        consumed_units,
-        consumed_units_per_day,
-
         net_export,
         net_export_per_day,
+
+        consumed_units,
+        consumed_units_per_day,
 
         grid_import_units,
         grid_import_units_per_day,
 
         direct_solar_units,
-        direct_solar_units_per_day
+        direct_solar_units_per_day,
     }
 }
 
