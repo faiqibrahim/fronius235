@@ -1,6 +1,7 @@
 const convert = require('convert-units');
 const moment = require('moment-timezone');
 const _ = require('lodash');
+const {convertTZ, convertTZMoment, currentTime} = require('../utils/common-utils');
 
 const parseCurrentData = (body) => {
     const data = JSON.parse(Object.keys(body)[0]);
@@ -79,7 +80,7 @@ const prepareUsageStats = (lastReading, meterReading, total_production, last_tot
 
 
 const prepareMeterReading = (data, lastReading) => {
-    const reading_date = moment(data.reading_date).tz('Asia/Karachi');
+    const reading_date = convertTZMoment(data.reading_date);
     const lastReadingDate = moment(lastReading.reading_date);
 
     const days_span = reading_date.diff(lastReadingDate, 'days', false);
@@ -88,10 +89,10 @@ const prepareMeterReading = (data, lastReading) => {
     const export_per_day = _.round((export_units - lastReading.export_units) / days_span, 2);
     const import_per_day = _.round((import_units - lastReading.import_units) / days_span, 2);
 
-    const now = moment().tz('Asia/Karachi').toDate();
+    const now = currentTime();
 
     return {
-        reading_date: reading_date.toDate(),
+        reading_date: convertTZ(reading_date),
         export_units,
         import_units,
         days_span,

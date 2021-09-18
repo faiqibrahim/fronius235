@@ -1,7 +1,7 @@
 const data = require('./solarweb.json');
 const moment = require('moment-timezone');
 const _ = require('lodash');
-const convert = require('convert-units');
+const {convertTZ} = require('../utils/common-utils');
 
 const prepareMigrationData = () => {
     const preparedData = [];
@@ -12,15 +12,15 @@ const prepareMigrationData = () => {
         const monthData = JSON.parse(month_data);
 
         monthData.settings.series[0].data.forEach(day => {
-            const time = moment(day[0]).tz('Asia/Karachi');
-            const year = time.format('YYYY');
+            const time = convertTZ(day[0]);
+            const year = convertTZ(day[0], 'YYYY');
             const units = day[1];
 
             totalEnergy = _.round(totalEnergy + units, 2);
             yearEnergies[year] = _.round((yearEnergies[year] || 0) + units, 2);
 
             preparedData.push({
-                time: time.toISOString(),
+                time: time.format('YYYY-MM-DD'),
                 dayEnergy: units,
                 currentPower: 0,
                 totalEnergy,
@@ -28,8 +28,6 @@ const prepareMigrationData = () => {
             });
         })
     });
-
-    console.log(`Prepared data for ${preparedData.length} days`);
 
     return preparedData;
 }

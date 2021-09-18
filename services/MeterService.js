@@ -1,11 +1,8 @@
 require('./init-service');
 
-const moment = require('moment-timezone');
 const MeterRepo = require('../repos/MeterRepo');
 const SolarRepo = require('../repos/SolarRepo');
-const _ = require('lodash');
 const {prepareMeterReading, prepareUsageStats} = require('../utils/SolarUtils');
-
 
 module.exports = class MeterService {
 
@@ -20,7 +17,5 @@ module.exports = class MeterService {
         const usageStats = prepareUsageStats(lastReading, meterReading, total_production, last_total_production);
 
         await MeterRepo.saveUsageStats(usageStats);
-
-        console.log("Usage Delta", usageStats);
     }
 }

@@ -8,6 +8,7 @@ const {
 } = require('./queries');
 const moment = require('moment-timezone');
 const _ = require('lodash');
+const {convertTZ} = require('../utils/common-utils');
 
 const querySuccessful = (rs) => rs && rs.rows && rs.rows.length;
 
@@ -45,7 +46,7 @@ module.exports = class SolarRepo {
     }
 
     static findDayStats = async (year = null, lastDay = null) => {
-        const params = lastDay ? [moment(lastDay).tz('Asia/Karachi').toDate()] : [];
+        const params = lastDay ? [convertTZ(lastDay)] : [];
         const query = FETCH_DAY_STATS_QUERY(lastDay, year);
 
         const connection = await pool.connect();
