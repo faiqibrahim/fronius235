@@ -6,10 +6,6 @@ const logRequestBody = (req, resp, next) => {
     next();
 }
 
-const basicAuth = (req, resp, next) => {
-
-}
-
 module.exports = {
     logRequestBody
 };
