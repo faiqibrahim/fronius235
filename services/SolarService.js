@@ -1,9 +1,9 @@
 const SolarRepo = require('../repos/SolarRepo');
-const moment = require('moment');
 const {currentTime} = require('../utils/common-utils');
 const Redis = require('../redis/Redis');
 const {CURRENT_POWER} = require('../redis/cache-keys');
 const {prepareMigrationData} = require('../migration/migrator');
+const {convertTZ} = require('../utils/common-utils');
 
 module.exports = class SolarService {
 
@@ -20,8 +20,8 @@ module.exports = class SolarService {
 
         const stats = {
             ...input,
-            day: moment(input.time).format('YYYY-MM-DD'),
-            year: moment(input.time).format('YYYY'),
+            day: input.time,
+            year: convertTZ(input.time, 'YYYY'),
             created_at: now,
             updated_at: now
         }

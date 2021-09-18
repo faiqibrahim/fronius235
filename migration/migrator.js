@@ -20,7 +20,7 @@ const prepareMigrationData = () => {
             yearEnergies[year] = _.round((yearEnergies[year] || 0) + units, 2);
 
             preparedData.push({
-                time: time.format('YYYY-MM-DD'),
+                time,
                 dayEnergy: units,
                 currentPower: 0,
                 totalEnergy,

@@ -12,7 +12,7 @@ const parseCurrentData = (body) => {
     const totalEnergy = convert(data.Body.TOTAL_ENERGY.Values['1']).from(data.Body.TOTAL_ENERGY.Unit).to('kWh');
 
     return {
-        time,
+        time : convertTZ(time),
         dayEnergy,
         currentPower,
         totalEnergy
