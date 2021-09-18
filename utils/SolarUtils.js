@@ -41,6 +41,7 @@ const prepareUsageStats = (lastReading, meterReading, total_production, last_tot
 
     const export_units = _.round(+meterReading.export_units - +lastReading.export_units, 2);
     const import_units = _.round(+meterReading.import_units - +lastReading.import_units, 2);
+    const import_units_per_day = _.round(import_units / days_span, 2);
 
     // Production = Export Units + Direct Solar Consumed Units  e.g 10 = 7 + 3
     // House Consumption = Import Units + Direct Solar Consumed Units e.g 8 = 5 + 3
@@ -72,8 +73,8 @@ const prepareUsageStats = (lastReading, meterReading, total_production, last_tot
         consumed_units,
         consumed_units_per_day,
 
-        grid_import_units,
-        grid_import_units_per_day,
+        grid_import_units: import_units,
+        grid_import_units_per_day: import_units_per_day,
 
         direct_solar_units,
         direct_solar_units_per_day,
