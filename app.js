@@ -75,7 +75,29 @@ app.post('/meter-reading', (req, resp) => {
             console.error('Error occurred while saving meter-reading', err);
             resp.status(500).send({});
         })
-})
+});
+
+app.get('/meter-readings', (req, resp) => {
+    MeterService.getMeterReadings(req.query.lastReadingDate)
+        .then(readings => {
+            resp.status(200).send({readings});
+        })
+        .catch(err => {
+            console.error('Error occurred while fetching meter-readings', err);
+            resp.status(500).send({});
+        })
+});
+
+app.get('/usage-stats', (req, resp) => {
+    MeterService.getUsageStats(req.query.lastId)
+        .then(stats => {
+            resp.status(200).send({stats});
+        })
+        .catch(err => {
+            console.error('Error occurred while fetching usage-stats', err);
+            resp.status(500).send({});
+        })
+});
 
 app.patch('/migrate', (req, resp) => {
     SolarService.loadMigrationData()

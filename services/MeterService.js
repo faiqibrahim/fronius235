@@ -18,4 +18,12 @@ module.exports = class MeterService {
 
         await MeterRepo.saveUsageStats(usageStats);
     }
+
+    static getMeterReadings = (lastReadingDate) => {
+        return MeterRepo.findMeterReadings(lastReadingDate);
+    }
+
+    static getUsageStats = (lastId) => {
+        return MeterRepo.findUsageStats(lastId);
+    }
 }

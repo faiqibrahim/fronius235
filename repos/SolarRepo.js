@@ -6,10 +6,9 @@ const {
     FETCH_YEAR_STATS_QUERY,
     FETCH_STATS_OF_DAY_QUERY
 } = require('./queries');
-const moment = require('moment-timezone');
+
 const _ = require('lodash');
 const {convertTZ} = require('../utils/common-utils');
-
 const querySuccessful = (rs) => rs && rs.rows && rs.rows.length;
 
 module.exports = class SolarRepo {

@@ -1,9 +1,13 @@
 const pool = require('../db/pg');
 const {
-    METER_READING_INSERT_QUERY, LAST_METER_READING_QUERY, USAGE_STATS_INSERT_QUERY,
-    LAST_USAGE_STATS_READING_QUERY
+    METER_READING_INSERT_QUERY,
+    LAST_METER_READING_QUERY,
+    USAGE_STATS_INSERT_QUERY,
+    FETCH_METER_READINGS_QUERY,
+    FETCH_USAGE_STATS_QUERY
 } = require('./queries');
 const _ = require('lodash');
+const {convertTZ} = require('../utils/common-utils');
 
 const querySuccessful = (rs) => rs && rs.rows && rs.rows.length;
 
@@ -13,16 +17,6 @@ module.exports = class MeterRepo {
         const connection = await pool.connect();
         try {
             const rs = await connection.query(LAST_METER_READING_QUERY);
-            return !_.isEmpty(rs.rows) ? rs.rows[0] : null;
-        } finally {
-            await connection.release();
-        }
-    }
-
-    static getLastUsageStats = async () => {
-        const connection = await pool.connect();
-        try {
-            const rs = await connection.query(LAST_USAGE_STATS_READING_QUERY);
             return !_.isEmpty(rs.rows) ? rs.rows[0] : null;
         } finally {
             await connection.release();
@@ -63,5 +57,34 @@ module.exports = class MeterRepo {
             await connection.release();
         }
     }
+
+    static findMeterReadings = async (lastReadingDate = null) => {
+        const params = lastReadingDate ? [convertTZ(lastReadingDate)] : [];
+
+        const query = FETCH_METER_READINGS_QUERY(lastReadingDate);
+
+        const connection = await pool.connect();
+        try {
+            const rs = await connection.query(query, params);
+            return rs.rows;
+        } finally {
+            await connection.release();
+        }
+    };
+
+    static findUsageStats = async (lastId = null) => {
+        const params = lastId ? [lastId] : [];
+
+        const query = FETCH_USAGE_STATS_QUERY(lastId);
+
+        const connection = await pool.connect();
+        try {
+            const rs = await connection.query(query, params);
+            return rs.rows;
+        } finally {
+            await connection.release();
+        }
+    };
+
 
 }
