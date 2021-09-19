@@ -1,7 +1,7 @@
 const convert = require('convert-units');
 const moment = require('moment-timezone');
 const _ = require('lodash');
-const {convertTZ, convertTZMoment, currentTime} = require('../utils/common-utils');
+const {convertTZ, convertTZMoment, currentTime, TIME_FORMAT} = require('../utils/common-utils');
 
 const parseCurrentData = (body) => {
     const data = JSON.parse(Object.keys(body)[0]);
@@ -12,7 +12,7 @@ const parseCurrentData = (body) => {
     const totalEnergy = convert(data.Body.TOTAL_ENERGY.Values['1']).from(data.Body.TOTAL_ENERGY.Unit).to('kWh');
 
     return {
-        time: convertTZ(time),
+        time: moment(time).format(TIME_FORMAT),
         dayEnergy,
         currentPower,
         totalEnergy
