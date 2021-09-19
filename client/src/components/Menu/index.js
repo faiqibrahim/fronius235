@@ -5,10 +5,22 @@ import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import LegendToggle from '@mui/icons-material/LegendToggle';
-import MailIcon from '@mui/icons-material/Mail';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
+import ReadMoreIcon from '@mui/icons-material/ReadMore';
+import QueryStatsIcon from '@mui/icons-material/QueryStats';
+import BatteryCharging60Icon from '@mui/icons-material/BatteryCharging60';
+import PowerInputIcon from '@mui/icons-material/PowerInput';
+import {withRouter} from 'react-router-dom';
 
-const Menu = ({toggleDrawer, open, toggleTheme}) => {
+const menus = [
+    {text: 'Current Status', link: '/live-stats', icon: <PowerInputIcon/>},
+    {text: 'Production History', link: '/production-history', icon: <QueryStatsIcon/>},
+    {text: 'Meter Readings', link: '/meter-readings', icon: <ReadMoreIcon/>},
+    {text: 'Usage Stats', link: '/usage-stats', icon: <BatteryCharging60Icon/>}
+];
+
+const Menu = ({toggleDrawer, open, toggleTheme, history}) => {
+
     return (
         <SwipeableDrawer
             anchor={"left"}
@@ -34,10 +46,13 @@ const Menu = ({toggleDrawer, open, toggleTheme}) => {
                 <Divider/>
 
                 <List>
-                    {['All mail', 'Trash', 'Spam'].map((text, index) => (
-                        <ListItem button key={text}>
+                    {menus.map(({text, link, icon}, index) => (
+                        <ListItem button key={text} onClick={() => {
+                            history.push(link);
+                            toggleDrawer(false)();
+                        }}>
                             <ListItemIcon>
-                                {index % 2 === 0 ? <LegendToggle/> : <MailIcon/>}
+                                {icon}
                             </ListItemIcon>
                             <ListItemText primary={text}/>
                         </ListItem>
@@ -48,4 +63,4 @@ const Menu = ({toggleDrawer, open, toggleTheme}) => {
     );
 }
 
-export default Menu;
+export default withRouter(Menu);

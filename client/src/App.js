@@ -4,8 +4,9 @@ import {useSelector} from 'react-redux'
 import {createTheme, styled, ThemeProvider} from '@mui/material/styles';
 import TopBar from "./components/TopBar";
 import {useState} from "react";
-import {BrowserRouter as Router, Route, Switch, Redirect} from "react-router-dom";
+import {BrowserRouter as Router, Redirect, Route, Switch} from "react-router-dom";
 import LiveStats from "./pages/LiveStats";
+import MeterReadingInput from "./pages/MeterReadingInput";
 
 const Content = styled(Box)(({theme}) => ({
     height: '100vh',
@@ -22,16 +23,25 @@ function App() {
 
     return (
         <ThemeProvider theme={theme}>
-            <CssBaseline/>
-            <TopBar toggleTheme={toggleTheme}/>
-
             <Router>
+
+                <CssBaseline/>
+                <TopBar toggleTheme={toggleTheme}/>
+
                 <Content>
                     <Switch>
                         <Route path={'/live-stats'}>
                             <LiveStats data={stats}/>
                         </Route>
-                        <Redirect to={'/live-stats'} />
+
+                        <Route path={'/new-meter-reading'}>
+                            <MeterReadingInput/>
+                        </Route>
+
+                        <Route path={'/'}>
+                            Hello
+                        </Route>
+                        <Redirect to={'/live-stats'}/>
                     </Switch>
                 </Content>
             </Router>

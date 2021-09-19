@@ -6,6 +6,11 @@ const MeterService = require('../../../services/MeterService');
 const SocketIO = require('../../../socket.io/index');
 
 module.exports = (app) => {
+
+    app.post('/validate-credentials', authenticate, (req, resp) => {
+        resp.status(200).send({});
+    })
+
     app.post('/current-data', authenticate, (req, resp) => {
         resp.status(200).send({});
 

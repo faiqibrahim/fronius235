@@ -94,7 +94,7 @@ const prepareMeterReading = (data, lastReading) => {
 
     const now = currentTime();
 
-    return {
+    const reading = {
         reading_date: convertTZ(reading_date),
         export_units,
         import_units,
@@ -104,8 +104,22 @@ const prepareMeterReading = (data, lastReading) => {
         created_at: now,
         updated_at: now
     }
+
+    validateReading(reading, lastReading);
+
+    return reading;
 }
 
+
+const validateReading = (reading, lastReading) => {
+    const validDate = moment(reading.reading_date).isAfter(moment(lastReading.reading_date));
+    const validExportUnits = (reading.export_units - lastReading.export_units) >= 0
+    const validImportUnits = (reading.import_units - lastReading.import_units) >= 0
+
+    if (!validDate || !validImportUnits || !validExportUnits) {
+        throw new Error("Invalid reading data");
+    }
+}
 
 module.exports = {
     parseCurrentData,

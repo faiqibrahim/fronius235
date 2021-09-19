@@ -3,12 +3,11 @@ import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
 import Menu from '../Menu';
 import {useState} from "react";
+import AuthProvider from "../AuthProvider";
 
-
-const TopBar = ({onButtonClick, toggleTheme}) => {
+const TopBar = ({toggleTheme}) => {
     const [menuOpen, setMenuOpen] = useState(false);
 
     const toggleDrawer = (open) => (event) => {
@@ -33,10 +32,12 @@ const TopBar = ({onButtonClick, toggleTheme}) => {
                     >
                         <MenuIcon/>
                     </IconButton>
+
                     <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
                         Solar 235-A
                     </Typography>
-                    <Button color="inherit" onClick={onButtonClick}>+ Meter Reading</Button>
+
+                    <AuthProvider text={"+ Meter Reading"} link={'/new-meter-reading'} />
                 </Toolbar>
             </AppBar>
         </>
