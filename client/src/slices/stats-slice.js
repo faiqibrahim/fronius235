@@ -10,6 +10,7 @@ export const statsSlice = createSlice({
         currentPower: 0,
         day,
         dayEnergy: 0,
+        yearEnergy: 0,
         time: day,
         year: now.format('YYYY')
     },

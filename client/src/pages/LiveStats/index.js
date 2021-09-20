@@ -5,7 +5,7 @@ const prepareStats = (data) => {
     return [
         {title: "Current Output", value: data.currentPower, unit: 'kW'},
         {title: "Today's Output", value: data.dayEnergy, unit: 'kWh'},
-        {title: `Total Output `, value: data.totalEnergy, unit: 'kWh'}
+        {title: `Year ${data.year}'s Output `, value: data.yearEnergy, unit: 'kWh'}
     ]
 };
 

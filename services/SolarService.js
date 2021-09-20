@@ -26,9 +26,17 @@ module.exports = class SolarService {
             updated_at: now
         }
 
-        this.#cacheCurrentOutput(stats);
-        await SolarRepo.saveDayStats(stats);
-        await SolarRepo.saveYearStats(stats);
+        const savedYearStats = (await Promise.all([
+            SolarRepo.saveDayStats(stats), SolarRepo.saveYearStats(stats)
+        ]))[1];
+
+        this.#cacheCurrentOutput({
+            currentPower: stats.currentPower,
+            day: stats.day,
+            dayEnergy: stats.dayEnergy,
+            year: stats.year,
+            yearEnergy: savedYearStats.units_produced,
+        });
     }
 
     static #cacheCurrentOutput = (output) => {
