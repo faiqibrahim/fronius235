@@ -1,6 +1,7 @@
 import {styled} from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
 import {Typography} from "@mui/material";
+import {formatNumber} from "../../utils/common-utils";
 
 const StyledPaper = styled(Paper)(({theme}) => ({
     ...theme.typography.h3,
@@ -13,11 +14,6 @@ const StyledPaper = styled(Paper)(({theme}) => ({
     lineHeight: '60px',
 }));
 
-const formatter = new Intl.NumberFormat('en-US',{
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-});
-
 const StatsCard = (props) => {
     const {title, value, unit} = props;
 
@@ -28,7 +24,7 @@ const StatsCard = (props) => {
             </Typography>
 
             <Typography variant="h5" elevation={3} component="div">
-                {`${formatter.format(value)} ${unit}`}
+                {`${formatNumber(value)} ${unit}`}
             </Typography>
         </StyledPaper>
     );

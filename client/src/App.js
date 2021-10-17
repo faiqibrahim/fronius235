@@ -7,6 +7,10 @@ import {useState} from "react";
 import {BrowserRouter as Router, Redirect, Route, Switch} from "react-router-dom";
 import LiveStats from "./pages/LiveStats";
 import MeterReadingInput from "./pages/MeterReadingInput";
+import ProductionHistory from "./pages/ProductionHistory";
+import MeterReadings from "./pages/MeterReadings";
+import UsageStats from "./pages/UsageStats";
+
 
 const Content = styled(Box)(({theme}) => ({
     height: '100vh',
@@ -34,13 +38,22 @@ function App() {
                             <LiveStats data={stats}/>
                         </Route>
 
+                        <Route path={'/production-history'}>
+                            <ProductionHistory/>
+                        </Route>
+
+                        <Route path={'/meter-readings'}>
+                            <MeterReadings/>
+                        </Route>
+
+                        <Route path={'/usage-stats'}>
+                            <UsageStats/>
+                        </Route>
+
                         <Route path={'/new-meter-reading'}>
                             <MeterReadingInput/>
                         </Route>
 
-                        <Route path={'/'}>
-                            Hello
-                        </Route>
                         <Redirect to={'/live-stats'}/>
                     </Switch>
                 </Content>
